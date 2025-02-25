@@ -35,19 +35,33 @@ console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})`);
 console.log(`📌 [${getCurrentTime()}] Nome da entidade: ${entityName}`);
 
 const className = entityName
-  .split('-') 
-  .map(part => part.charAt(0).toUpperCase() + part.slice(1)) 
-  .join(''); 
+  .split('-')
+  .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+  .join('');
+
+const textName = entityName
+  .split('-')
+  .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+  .join(' ');
+const variableName = className.charAt(0).toLowerCase() + className.slice(1);
 const fileName = entityName.toLowerCase();
-const context = { className, fileName };
+const context = { className, fileName, variableName, textName };
 
 console.log(`📌 [${getCurrentTime()}] Classe gerada: ${className}`);
 console.log(`📌 [${getCurrentTime()}] Nome de arquivo base: ${fileName}`);
 
+const getSubfolder = (fileName) => {
+  if (fileName.includes('.type')) return entityName +'-types';
+  if (fileName.includes('-form')) return entityName +'-form';
+  if (fileName.includes('-listagem')) return entityName +'-listagem';
+  return ''; //root diretory
+};
+
 const generateFile = (templateFile) => {
   const templatePath = path.join(templatesDir, templateFile);
   const outputFileName = `${fileName}.${templateFile.replace('.hbs', '')}`;
-  const outputFilePath = path.join(outputPath, fileName, outputFileName);
+  const subfolder = getSubfolder(outputFileName);
+  const outputFilePath = path.join(outputPath, fileName, subfolder, outputFileName);
 
   if (!fs.existsSync(templatePath)) {
     console.error(`❌ [${getCurrentTime()}] Template não encontrado: (${templatePath})`);

@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {tap} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import { {{className}} } from './{{fileName}}.type';
 
@@ -14,5 +15,63 @@ export class {{className}}Service {
   private _httpClient = inject(HttpClient)
 
   private _messageService = inject(MessageService)
+
+  buscarTodos$() {
+    return this._httpClient.get<{{className}}[]>(`${this._url}`)
+  }
+
+  buscarPorId$(id: number) {
+    return this._httpClient.get<{{className}}>(`${this._url}/${id}`)
+  }
+
+  salvar$({{variableName}}: {{className}}, id?: string | number | null) {
+    if (id)
+      return this.atualizar$(id, {{variableName}})
+    else
+      return this.cadastrar$({{variableName}})
+  }
+
+  alternarEstado$(id: number, {{variableName}}: {{className}}) {
+    return this._httpClient.patch<{{className}}>(`${this._url}/${id}`, ativo)
+      .pipe(
+        tap(() =>
+          this._messageService.add(
+            {
+              severity: 'success',
+              summary: '{{textName}}',
+              detail: '{{textName}} atualizado!'
+            }
+          ))
+      )
+  }
+
+  private atualizar$(id: string | number, {{variableName}}: {{className}}) {
+    return this._httpClient.put<{{className}} | null>(`${this._url}/${id}`, {{variableName}})
+      .pipe(
+        tap(() =>
+          this._messageService.add(
+            {
+              severity: 'success',
+              summary: '{{textName}}',
+              detail: '{{textName}} atualizado!'
+            }
+          ))
+      )
+  }
+
+  private cadastrar$({{variableName}}: {{className}}) {
+    return this._httpClient.post<{{className}}>(`${this._url}`, {{variableName}})
+      .pipe(
+        tap(() =>
+          this._messageService.add(
+            {
+              severity: 'success',
+              summary: '{{textName}}',
+              detail: '{{textName}} cadastrado!'
+            }
+          ))
+      )
+  }
+
 
 }

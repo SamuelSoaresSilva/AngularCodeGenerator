@@ -2,7 +2,7 @@
   "name": "geradordecodigoangular",
   "version": "1.0.0",
   "description": "geradorDeCodigoAngular",
-  "main": "generate-crud.js",
+  "main": "gerar-crud-base.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -49,8 +49,6 @@ const generateFile = (templateFile) => {
   const outputFileName = `${fileName}.${templateFile.replace('.hbs', '')}`;
   const outputFilePath = path.join(outputPath, fileName, outputFileName);
 
-  console.log(`📄 [${getCurrentTime()}] Gerando arquivo: (${outputFilePath})`);
-
   if (!fs.existsSync(templatePath)) {
     console.error(`❌ [${getCurrentTime()}] Template não encontrado: (${templatePath})`);
     return;

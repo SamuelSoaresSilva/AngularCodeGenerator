@@ -12,13 +12,9 @@ console.log(`
  
  Gerador de código Angular
 `);
-;
 
 const templatesDir = path.join(__dirname, 'templates');
 const outputPath = path.join(__dirname, 'resultado');
-
-console.log(`📂 Pasta de templates: ${templatesDir}`);
-console.log(`📂 Pasta de saída: ${outputPath}`);
 
 const args = process.argv.slice(2);
 const entityName = args[0];
@@ -27,6 +23,9 @@ if (!entityName) {
   console.error("❌ Forneça um nome para a entidade. Exemplo: node generate-crud.js usuario");
   process.exit(1);
 }
+
+console.log(`📂 Pasta de templates: ${templatesDir}`);
+console.log(`📂 Pasta de saída: ${outputPath}`);
 
 console.log(`📌 Nome da entidade: ${entityName}`);
 
@@ -37,9 +36,10 @@ const context = { className, fileName };
 console.log(`📌 Classe gerada: ${className}`);
 console.log(`📌 Nome de arquivo base: ${fileName}`);
 
-const generateFile = (templateFile, outputFile) => {
+const generateFile = (templateFile) => {
   const templatePath = path.join(templatesDir, templateFile);
-  const outputFilePath = path.join(outputPath, outputFile);
+  const outputFileName = `${fileName}.${templateFile.replace('.hbs', '')}`;
+  const outputFilePath = path.join(outputPath, fileName, outputFileName);
 
   console.log(`📄 Gerando arquivo: ${outputFilePath}`);
 
@@ -57,11 +57,10 @@ const generateFile = (templateFile, outputFile) => {
 };
 
 fs.removeSync(outputPath);
-fs.mkdirSync(outputPath, { recursive: true });
+fs.mkdirSync(path.join(outputPath, fileName), { recursive: true });
 
-generateFile('component.ts.hbs', `${fileName}/${fileName}.component.ts`);
-generateFile('service.ts.hbs', `${fileName}/${fileName}.service.ts`);
-generateFile('module.ts.hbs', `${fileName}/${fileName}.module.ts`);
-generateFile('routing.module.ts.hbs', `${fileName}/${fileName}-routing.module.ts`);
+fs.readdirSync(templatesDir)
+  .filter(file => file.endsWith('.hbs'))
+  .forEach(generateFile);
 
-console.log(`✅Código criado em: resultado/✅`);
+console.log(`🚀 Código gerado com sucesso em: resultado/${fileName}/`);

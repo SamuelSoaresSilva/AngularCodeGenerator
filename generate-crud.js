@@ -19,6 +19,10 @@ const outputPath = path.join(__dirname, 'resultado');
 const args = process.argv.slice(2);
 const entityName = args[0];
 
+args.forEach(arg => {
+  console.log("Argumento: ",arg)
+});
+
 if (!entityName) {
   console.error("❌ Forneça um nome para a entidade. Exemplo: node generate-crud.js usuario");
   process.exit(1);

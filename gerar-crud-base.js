@@ -1,3 +1,5 @@
+console.clear()
+
 const fs = require('fs-extra');
 const path = require('path');
 const Handlebars = require('handlebars');
@@ -7,10 +9,8 @@ const getCurrentTime = () => {
   return now.toLocaleTimeString();
 };
 
-console.clear()
-
 console.log(`
-
+    
 ███    ███████████████ 
 ████  ████   ██  ██    
 ██ ████ ██████   ██    
@@ -25,7 +25,7 @@ const outputPath = path.join(__dirname, 'resultado');
 
 const args = process.argv.slice(2);
 const entityName = args[0];
-const plural = args[1].split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+const plural = args[1];
 const route = args[2];
 
 if (!entityName || !route || !plural) {
@@ -35,7 +35,7 @@ if (!entityName || !route || !plural) {
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);
 console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})\n`);
-
+const pluralName = plural.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
 const className = entityName
   .split('-')
   .map(part => part.charAt(0).toUpperCase() + part.slice(1))
@@ -47,7 +47,7 @@ const textName = entityName
   .join(' ');
 const variableName = className.charAt(0).toLowerCase() + className.slice(1);
 const fileName = entityName.toLowerCase();
-const pluralVariableName = plural.charAt(0).toLowerCase() + plural.slice(1);
+const pluralVariableName = pluralName.charAt(0).toLowerCase() + pluralName.slice(1);
 
 const context = { 
                   className,

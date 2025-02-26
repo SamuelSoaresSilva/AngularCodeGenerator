@@ -30,9 +30,7 @@ if (!entityName) {
 }
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);
-console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})`);
-
-console.log(`📌 [${getCurrentTime()}] Nome da entidade: ${entityName}`);
+console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})\n`);
 
 const className = entityName
   .split('-')
@@ -47,8 +45,10 @@ const variableName = className.charAt(0).toLowerCase() + className.slice(1);
 const fileName = entityName.toLowerCase();
 const context = { className, fileName, variableName, textName };
 
-console.log(`📌 [${getCurrentTime()}] Classe gerada: ${className}`);
-console.log(`📌 [${getCurrentTime()}] Nome de arquivo base: ${fileName}`);
+console.log(`📌 [${getCurrentTime()}] Classe: ${className}`);
+console.log(`📌 [${getCurrentTime()}] Nome de arquivo: ${fileName}`);
+console.log(`📌 [${getCurrentTime()}] Variavel: ${variableName}`);
+console.log(`📌 [${getCurrentTime()}] Texto: ${textName}\n`);
 
 const getSubfolder = (fileName) => {
   if (fileName.includes('.type')) return entityName +'-types';

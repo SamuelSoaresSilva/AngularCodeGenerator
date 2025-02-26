@@ -1,0 +1,27 @@
+<app-panel>
+  <form #formulario="ngForm" (ngSubmit)="salvar(formulario)">
+    <div class="flex flex-col gap-5">
+      <section class="flex flex-col gap-2">
+        <p-iftalabel>
+          <p-icon-field iconPosition="left">
+            <input
+              #input.descricao [(ngModel)]="{{variableName}}().descricao"
+              autocomplete="off"
+              class="w-full"
+              id="nome"
+              name="descricao"
+              pInputText
+              required
+              size="small"/>
+          </p-icon-field>
+          <label for="nome">Descreva o {{textName}}</label>
+        </p-iftalabel>
+      </section>
+
+      <div class="flex gap-3">
+        <p-button [disabled]="formulario.form.invalid" icon="pi pi-check" label="Salvar" type="submit"/>
+        <p-button label="Voltar" routerLink="{{route}}" severity="secondary"/>
+      </div>
+    </div>
+  </form>
+</app-panel>

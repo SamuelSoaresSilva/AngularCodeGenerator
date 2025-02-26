@@ -15,7 +15,7 @@ console.log(`
 ██  ██  ██       ██    
 ██      ██       ██    
                                                       
-Gerador de código Angular
+Tabela de apoio crud CLI
 `);
 
 const templatesDir = path.join(__dirname, 'templates');
@@ -23,16 +23,19 @@ const outputPath = path.join(__dirname, 'resultado');
 
 const args = process.argv.slice(2);
 const entityName = args[0];
+const route = args[1];
 
 if (!entityName) {
   console.error(`❌ [${getCurrentTime()}] Forneça um nome para a entidade. Exemplo: node gerar-crud-base.js usuario`);
   process.exit(1);
 }
+if (!route) {
+  console.error(`❌ [${getCurrentTime()}] Forneça um endpoint para a rota do modulo. Exemplo: node gerar-crud-base.js <nomeDoModulo> /exemplo/usuario`);
+  process.exit(1);
+}
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);
-console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})`);
-
-console.log(`📌 [${getCurrentTime()}] Nome da entidade: ${entityName}`);
+console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})\n`);
 
 const className = entityName
   .split('-')
@@ -45,10 +48,14 @@ const textName = entityName
   .join(' ');
 const variableName = className.charAt(0).toLowerCase() + className.slice(1);
 const fileName = entityName.toLowerCase();
-const context = { className, fileName, variableName, textName };
+const context = { className, fileName, variableName, textName, route };
 
-console.log(`📌 [${getCurrentTime()}] Classe gerada: ${className}`);
-console.log(`📌 [${getCurrentTime()}] Nome de arquivo base: ${fileName}`);
+
+console.log(`📌 [${getCurrentTime()}] Classe:             ${className}`);
+console.log(`📌 [${getCurrentTime()}] Texto:              ${textName}`);
+console.log(`📌 [${getCurrentTime()}] Variavel:           ${variableName}`);
+console.log(`📌 [${getCurrentTime()}] Rota:               ${route}`);
+console.log(`📌 [${getCurrentTime()}] Prefixo do arquivo: ${fileName}\n`);
 
 const getSubfolder = (fileName) => {
   if (fileName.includes('.type')) return entityName +'-types';
@@ -86,4 +93,4 @@ fs.readdirSync(templatesDir)
   .filter(file => file.endsWith('.hbs'))
   .forEach(generateFile);
 
-console.log(`🚀 [${getCurrentTime()}] Código gerado com sucesso em: (${outputPath}/${fileName}/)`);
+console.log(`🚀 [${getCurrentTime()}] Resultado em: (${outputPath}/${fileName}/)`);

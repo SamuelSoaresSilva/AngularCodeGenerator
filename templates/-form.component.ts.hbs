@@ -1,0 +1,71 @@
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+  viewChild
+} from '@angular/core';
+import { {{className}}Service } from '../{{fileName}}.service';
+import { {{className}} } from '../{{fileName}}.type';
+import {IconField} from "primeng/iconfield";
+import {InputText} from "primeng/inputtext";
+import {IftaLabel} from 'primeng/iftalabel';
+import {Router, RouterLink, ReactiveFormsModule} from '@angular/router';
+import {tap} from 'rxjs';
+import {FormsModule, NgForm} from "@angular/forms";
+import {PanelComponent} from '@app/shared/componentes/panel/panel.component';
+import {Button} from "primeng/button";
+
+@Component({
+  selector: 'app-{{fileName}}-form',
+  imports: [
+    Button,
+    FormsModule,
+    IconField,
+    IftaLabel,
+    InputText,
+    PanelComponent,
+    ReactiveFormsModule,
+    RouterLink
+  ],
+  templateUrl: './{{fileName}}-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+
+export class {{className}}FormComponent implements OnInit, AfterViewInit {
+  id = input<string>('')
+
+  protected inputDescricao = viewChild<ElementRef<HTMLInputElement>>('input.descricao');
+  protected readonly _{{variableName}}Service = inject({{className}}Service)
+  protected {{variableName}} = signal<{{className}}>({descricao: '', ativo: true})
+  private readonly router = inject(Router)
+
+  seta{{className}}() {
+    if (this.id())
+      this._{{variableName}}Service.buscarPorId$(Number(this.id())).pipe(
+        tap(x => this.{{variableName}}.set(x))
+      ).subscribe()
+  }
+
+  ngOnInit(): void {
+    this.seta{{className}}()
+  }
+
+  ngAfterViewInit(): void {
+    this.inputDescricao()?.nativeElement.focus();
+  }
+
+  protected salvar(formulario: NgForm) {
+    if (formulario.form.valid) {
+      this._{{variableName}}Service.salvar$(this.{{variableName}}(), this.{{variableName}}().id)
+        .pipe(
+          tap(() => this.router.navigate(['{{route}}']).then())
+        )
+        .subscribe()
+    }
+  }
+}

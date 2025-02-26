@@ -59,7 +59,10 @@ const getSubfolder = (fileName) => {
 
 const generateFile = (templateFile) => {
   const templatePath = path.join(templatesDir, templateFile);
-  const outputFileName = `${fileName}.${templateFile.replace('.hbs', '')}`;
+  const templateBaseName = templateFile.replace('.hbs', '');
+  const outputFileName = templateBaseName.startsWith('-')
+    ? `${fileName}${templateBaseName}`
+    : `${fileName}.${templateBaseName}`;
   const subfolder = getSubfolder(outputFileName);
   const outputFilePath = path.join(outputPath, fileName, subfolder, outputFileName);
 

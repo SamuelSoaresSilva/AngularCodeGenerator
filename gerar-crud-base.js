@@ -1,3 +1,5 @@
+console.clear()
+
 const fs = require('fs-extra');
 const path = require('path');
 const Handlebars = require('handlebars');
@@ -8,14 +10,14 @@ const getCurrentTime = () => {
 };
 
 console.log(`
-
+    
 ███    ███████████████ 
 ████  ████   ██  ██    
 ██ ████ ██████   ██    
 ██  ██  ██       ██    
 ██      ██       ██    
                                                       
-Gerador de código Angular
+Tabela de apoio crud CLI
 `);
 
 const templatesDir = path.join(__dirname, 'templates');
@@ -23,15 +25,17 @@ const outputPath = path.join(__dirname, 'resultado');
 
 const args = process.argv.slice(2);
 const entityName = args[0];
+const plural = args[1];
+const route = args[2];
 
-if (!entityName) {
-  console.error(`❌ [${getCurrentTime()}] Forneça um nome para a entidade. Exemplo: node gerar-crud-base.js usuario`);
+if (!entityName || !route || !plural) {
+  console.error(`❌ [${getCurrentTime()}] Faltam informações na linha de comando. Verifique o exemplo: node gerar-crud-base.js <nome-da-entidade> <nome-plural-da-entidade> <rota/Do/Modulo>`);
   process.exit(1);
 }
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);
 console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})\n`);
-
+const pluralName = plural.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
 const className = entityName
   .split('-')
   .map(part => part.charAt(0).toUpperCase() + part.slice(1))
@@ -43,12 +47,24 @@ const textName = entityName
   .join(' ');
 const variableName = className.charAt(0).toLowerCase() + className.slice(1);
 const fileName = entityName.toLowerCase();
-const context = { className, fileName, variableName, textName };
+const pluralVariableName = pluralName.charAt(0).toLowerCase() + pluralName.slice(1);
 
-console.log(`📌 [${getCurrentTime()}] Classe: ${className}`);
-console.log(`📌 [${getCurrentTime()}] Nome de arquivo: ${fileName}`);
-console.log(`📌 [${getCurrentTime()}] Variavel: ${variableName}`);
-console.log(`📌 [${getCurrentTime()}] Texto: ${textName}\n`);
+const context = { 
+                  className,
+                  fileName, 
+                  variableName, 
+                  textName, 
+                  route, 
+                  pluralVariableName, 
+                };
+
+
+console.log(`📌 [${getCurrentTime()}] Rota:               ${route}`);
+console.log(`📌 [${getCurrentTime()}] Prefixo do arquivo: ${fileName}`);
+console.log(`📌 [${getCurrentTime()}] Classe:             ${className}`);
+console.log(`📌 [${getCurrentTime()}] Variavel:           ${variableName}`);
+console.log(`📌 [${getCurrentTime()}] Plural:             ${pluralVariableName}`);
+console.log(`📌 [${getCurrentTime()}] Texto:              ${textName}\n`);
 
 const getSubfolder = (fileName) => {
   if (fileName.includes('.type')) return entityName +'-types';
@@ -86,4 +102,4 @@ fs.readdirSync(templatesDir)
   .filter(file => file.endsWith('.hbs'))
   .forEach(generateFile);
 
-console.log(`🚀 [${getCurrentTime()}] Código gerado com sucesso em: (${outputPath}/${fileName}/)`);
+console.log(`\n🚀 [${getCurrentTime()}] Resultado em: (${outputPath}/${fileName}/)`);

@@ -1,9 +1,40 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject} from '@angular/core';
+import {Button} from 'primeng/button';
+import {PanelComponent} from '@app/shared/componentes/panel/panel.component';
+import {RouterLink} from '@angular/router';
+import {PrimeTemplate} from "primeng/api";
+import {TableModule} from "primeng/table";
+import {toSignal} from '@angular/core/rxjs-interop';
+import {tap} from 'rxjs';
+import { {{className}}Service} from '../{{fileName}}.service';
+import { {{className}} } from '../{{fileName}}.type';
 
 @Component({
-  selector: 'app-{{fileName}}',
-  templateUrl: './{{fileName}}.component.html',
+  selector: 'app-{{fileName}}-listagem',
+  imports: [
+    Button,
+    PanelComponent,
+    RouterLink,
+    PrimeTemplate,
+    TableModule
+  ],
+  templateUrl: './{{fileName}}-listagem.component.html',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class {{className}}Component {
-  constructor() {}
+
+export class {{className}}ListagemComponent {
+  private _{{variableName}}Service = inject({{className}}Service)
+  protected {{pluralVariableName}} =
+    toSignal(this._{{variableName}}Service.buscarTodos$(), {initialValue: [] as {{className}}[]})
+  private _changeDetector = inject(ChangeDetectorRef)
+
+  protected alternarEstado(item: {{className}}) {
+    this._{{variableName}}Service.alternarEstado$(item.id!)
+      .pipe(
+        tap(() => item.ativo = !item.ativo),
+        tap(() => this._changeDetector.detectChanges())
+      )
+      .subscribe()
+  }
 }

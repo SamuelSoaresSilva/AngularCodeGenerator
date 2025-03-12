@@ -26,15 +26,16 @@ const outputPath = path.join(__dirname, 'resultado');
 const args = process.argv.slice(2);
 const entityName = args[0];
 const plural = args[1];
-const route = args[2];
+const preTreatedRoute = args[2];
+let route = null;
 
-if (!entityName || !route || !plural) {
+if (!entityName || !preTreatedRoute || !plural) {
   console.error(`❌ [${getCurrentTime()}] Faltam informações na linha de comando. Verifique o exemplo: node gerar-crud-base.js <nome-da-entidade> <nome-plural-da-entidade> <rota/Do/Modulo>`);
   process.exit(1);
 }
-if (route.startsWith('/')) {
-  route = route.slice(1);
-  console.log(`🔧 [${getCurrentTime()}] Sintaxe de rota corrigida "/" removida `)
+if (preTreatedRoute.startsWith('/')) {
+  route = preTreatedRoute.slice(1);
+  console.log(`🔧 [${getCurrentTime()}] Sintaxe de rota corrigida primeira "/" removida `)
 }
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);

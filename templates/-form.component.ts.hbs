@@ -10,14 +10,13 @@ import {
   viewChild
 } from '@angular/core';
 import { {{className}}Service } from '../{{fileName}}.service';
-import { {{className}} } from '../{{fileName}}.type';
+import { {{className}} } from './{{fileName}}-types/{{fileName}}.type';
 import {IconField} from "primeng/iconfield";
 import {InputText} from "primeng/inputtext";
 import {IftaLabel} from 'primeng/iftalabel';
-import {Router, RouterLink, ReactiveFormsModule} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {tap} from 'rxjs';
-import {FormsModule, NgForm} from "@angular/forms";
-import {PanelComponent} from '@app/shared/componentes/panel/panel.component';
+import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {Button} from "primeng/button";
 
 @Component({
@@ -28,11 +27,11 @@ import {Button} from "primeng/button";
     IconField,
     IftaLabel,
     InputText,
-    PanelComponent,
     ReactiveFormsModule,
     RouterLink
   ],
   templateUrl: './{{fileName}}-form.component.html',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

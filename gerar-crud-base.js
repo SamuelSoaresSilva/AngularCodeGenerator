@@ -32,6 +32,10 @@ if (!entityName || !route || !plural) {
   console.error(`❌ [${getCurrentTime()}] Faltam informações na linha de comando. Verifique o exemplo: node gerar-crud-base.js <nome-da-entidade> <nome-plural-da-entidade> <rota/Do/Modulo>`);
   process.exit(1);
 }
+if (route.startsWith('/')) {
+  route = route.slice(1);
+  console.log(`🔧 [${getCurrentTime()}] Sintaxe de rota corrigida "/" removida `)
+}
 
 console.log(`📂 [${getCurrentTime()}] Pasta de templates: (${templatesDir})`);
 console.log(`📂 [${getCurrentTime()}] Pasta de saída: (${outputPath})\n`);

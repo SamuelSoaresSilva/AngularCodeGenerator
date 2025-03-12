@@ -97,7 +97,7 @@ const generateFile = (templateFile) => {
   const result = compiledTemplate(context);
 
   fs.outputFileSync(outputFilePath, result);
-  console.log(`✅ [${getCurrentTime()}] Arquivo gerado com sucesso: (${outputFilePath})`);
+  console.log(`✅ [${getCurrentTime()}] Arquivo gerado: (${outputFilePath})`);
 };
 
 fs.removeSync(outputPath);
